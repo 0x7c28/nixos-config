@@ -52,7 +52,7 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "x99-pc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -128,7 +128,7 @@
       kdePackages.kate
     #  thunderbird
     ];
-    openssh.authorizedKeys.keyFiles = [ "/home/cypher/.ssh/id_rsa" ];
+    #openssh.authorizedKeys.keyFiles = [ "../.ssh/id_rsa" ];
   };
 
   # Install firefox.

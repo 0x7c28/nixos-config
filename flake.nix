@@ -1,43 +1,20 @@
 {
-  description = "NixOS configuration";
+  description = "A simple NixOS flake";
 
   inputs = {
-    nixpkgs.url = "git+ssh://git@github.com/NixOS/nixpkgs/nixos-unstable";
-    stylix.url = "git+ssh://git@github.com/danth/stylix";
-    niri.url = "git+ssh://git@github.com/sodiboo/niri";
-    
-    # 主题仓库（SSH协议）
-    gruvbox-materia = {
-      url = "git+ssh://git@github.com/sainnhe/gruvbox-material";
-      flake = false;
-    };
-    catppuccin = {
-      url = "git+ssh://git@github.com/catppuccin/base16-schemes";
-      flake = false;
-    };
+    # NixOS 官方软件源，这里使用 nixos-24.11 分支
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
-  let
-    system = "x86_64-linux";
-  in
-  {
-    nixosConfigurations = {
-      my-host = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          ./modules/system/ssh.nix
-          ./modules/system/base.nix
-	  ./modules/desktop/plasma.nix
-	  ./modules/desktop/niri.nix
-          {
-            imports = [ ./modules/stylix ];
-            theme.active = "catppuccin"; # gruvbox-materia/catppuccin
-          }
-        ];
-      };
+  outputs = { self, nixpkgs, ... }@inputs: {
+    # 请将下面的 my-nixos 替换成你的 hostname
+    nixosConfigurations.x99-pc = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        # 这里导入之前我们使用的 configuration.nix，
+        # 这样旧的配置文件仍然能生效
+        ./configuration.nix
+      ];
     };
   };
 }
