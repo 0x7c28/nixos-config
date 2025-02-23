@@ -128,6 +128,7 @@
       kdePackages.kate
     #  thunderbird
     ];
+    openssh.authorizedKeys.keyFiles = [ "/home/cypher/.ssh/id_rsa" ];
   };
 
   # Install firefox.
