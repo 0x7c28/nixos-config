@@ -23,6 +23,13 @@
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
+  
+  fileSystems."/home"=
+    {
+      device = "/dev/disk/by-uuid/e8af7030-718b-4e58-95fa-027ded6573bb";
+      fsType = "btrfs";
+      options = [ "compress=zstd" ];
+    };
 
   swapDevices = [ ];
 
