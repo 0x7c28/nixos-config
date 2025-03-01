@@ -5,6 +5,8 @@
   home.username = "cypher";
   home.homeDirectory = "/home/cypher";
 
+  home.backupFileExtension = "backup";
+
   # 直接将当前文件夹的配置文件，链接到 Home 目录下的指定位置
   # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
 

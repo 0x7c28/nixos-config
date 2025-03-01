@@ -3,9 +3,9 @@
 
   inputs = {
     # NixOS 官方软件源，这里使用 nixos-24.11 分支
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11 ";
     #home-manager.url = "github:nix-community/home-manager";
-    home-manager.url = "git+ssh://git@github.com/nix-community/home-manager.git?ref=release-24.05";
+    home-manager.url = "git+ssh://git@github.com/nix-community/home-manager.git?ref=release-24.11";
     nix-gaming.url = "git+ssh://git@github.com/fufexan/nix-gaming.git";
   };
 
