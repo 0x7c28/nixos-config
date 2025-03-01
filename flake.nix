@@ -3,7 +3,7 @@
 
   inputs = {
     # NixOS 官方软件源，这里使用 nixos-24.11 分支
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11 ";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     #home-manager.url = "github:nix-community/home-manager";
     home-manager.url = "git+ssh://git@github.com/nix-community/home-manager.git?ref=release-24.11";
     nix-gaming.url = "git+ssh://git@github.com/fufexan/nix-gaming.git";
@@ -21,6 +21,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            #nix-gaming
+            nix-gaming.nixosModules.default
 
             # 这里的 ryan 也得替换成你的用户名
             # 这里的 import 函数在前面 Nix 语法中介绍过了，不再赘述
