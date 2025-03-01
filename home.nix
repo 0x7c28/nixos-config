@@ -94,8 +94,8 @@
     pciutils # lspci
     usbutils # lsusb
 
-    # game
-    inputs.nix-gaming.packages.${pkgs.system}.proton-ge # installs a package
+    #game
+    bottles
   ];
 
   # git 相关配置
@@ -131,6 +131,19 @@
       selection.save_to_clipboard = true;
     };
   };
+
+  #Steam
+   programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;  # 开放远程游戏端口
+  };
+
+  nix-gaming = {
+    wine.enable = true;         # 支持自定义 Wine 版本
+    pipewireLowLatency.enable = true;  # 低延迟音频
+  };
+
+
 
   programs.bash = {
     enable = true;
