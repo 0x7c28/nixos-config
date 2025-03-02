@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nix-gaming, ... }:
 
 {
   # 注意修改这里的用户名与用户目录
@@ -96,6 +96,9 @@
 
     #game
     bottles
+    steam  # 用户级安装 Steam
+    protonup-qt  # 管理 Proton-GE 等版本
+    (nix-gaming.packages.${pkgs.system}.wine-ge)  # 优化版 Wine
   ];
 
   # git 相关配置
@@ -132,18 +135,11 @@
     };
   };
 
-  #Steam
-   programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;  # 开放远程游戏端口
+  # 环境变量配置（Proton 和游戏优化）
+  home.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";  # Proton 工具路径
+    #RADV_PERFTEST = "aco";  # AMD GPU 性能优化
   };
-
-  nix-gaming = {
-    wine.enable = true;         # 支持自定义 Wine 版本
-    pipewireLowLatency.enable = true;  # 低延迟音频
-  };
-
-
 
   programs.bash = {
     enable = true;

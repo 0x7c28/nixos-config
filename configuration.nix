@@ -13,6 +13,9 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.kernelModules = [ "tun" ];
+  boot.extraModprobeConfig = "options tun numdevs=1024";  # 增加虚拟设备数量
   
   hardware.graphics = {
     enable = true;
@@ -35,15 +38,12 @@
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
-    
-    programs.gamemode.enable = true;  # 性能模式
-    hardware.opengl.enable = true;
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
     # Support is limited to the Turing and later architectures. Full list of 
     # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     open = false;
 
@@ -55,6 +55,14 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  programs.gamemode.enable = true;  # 性能模式
+  #hardware.graphics.enable = true;
+  hardware.opengl = {
+    enable = true;
+    #driSupport = true;
+    driSupport32Bit = true;  # 支持 32 位游戏
+  };
+
   networking.hostName = "x99-pc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -64,32 +72,32 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.hosts = {
-  "140.82.113.26" = ["alive.github.com"];
-  "140.82.116.5" = ["api.github.com"];
-  "185.199.109.153" = ["assets-cdn.github.com"];
-  "185.199.110.133" = ["avatars.githubusercontent.com" "avatars0.githubusercontent.com" "avatars5.githubusercontent.com" "camo.githubusercontent.com"];
-  "185.199.108.133" = ["avatars1.githubusercontent.com" "avatars2.githubusercontent.com" "avatars3.githubusercontent.com" "github.map.fastly.net" "media.githubusercontent.com"];
-  "140.82.112.22" = ["central.github.com"];
-  "185.199.111.133" = ["avatars4.githubusercontent.com" "cloud.githubusercontent.com" "favicons.githubusercontent.com" "raw.githubusercontent.com" "private-user-images.githubusercontent.com"];
-  "140.82.116.9" = ["codeload.github.com"];
-  "140.82.112.21" = ["collector.github.com"];
-  "185.199.109.133" = ["desktop.githubusercontent.com" "objects.githubusercontent.com"];
-  "140.82.116.3" = ["gist.github.com"];
-  "3.5.27.235" = ["github-cloud.s3.amazonaws.com"];
-  "52.216.56.193" = ["github-com.s3.amazonaws.com"];
-  "16.15.200.250" = ["github-production-release-asset-2e65be.s3.amazonaws.com" "github-production-repository-file-5c1aeb.s3.amazonaws.com" "github-production-user-asset-6210df.s3.amazonaws.com"];
-  "192.0.66.2" = ["github.blog"];
-  "140.82.116.4" = ["github.com"];
-  "140.82.114.18" = ["github.community"];
-  "185.199.108.154" = ["github.githubassets.com"];
-  "151.101.1.194" = ["github.global.ssl.fastly.net"];
-  "185.199.108.153" = ["github.io" "githubstatus.com"];
-  "140.82.114.26" = ["live.github.com"];
-  "13.107.42.16" = ["pipelines.actions.githubusercontent.com"];
-  "13.107.253.69" = ["vscode.dev"];
-  "140.82.113.21" = ["education.github.com"];
-  };
+  #networking.hosts = {
+  #"140.82.113.26" = ["alive.github.com"];
+  #"140.82.116.5" = ["api.github.com"];
+  #"185.199.109.153" = ["assets-cdn.github.com"];
+  #"185.199.110.133" = ["avatars.githubusercontent.com" "avatars0.githubusercontent.com" "avatars5.githubusercontent.com" #"camo.githubusercontent.com"];
+  #"185.199.108.133" = ["avatars1.githubusercontent.com" "avatars2.githubusercontent.com" "avatars3.githubusercontent.com" #"github.map.fastly.net" "media.githubusercontent.com"];
+  #"140.82.112.22" = ["central.github.com"];
+  #"185.199.111.133" = ["avatars4.githubusercontent.com" "cloud.githubusercontent.com" "favicons.githubusercontent.com" #"raw.githubusercontent.com" "private-user-images.githubusercontent.com"];
+  #"140.82.116.9" = ["codeload.github.com"];
+  #"140.82.112.21" = ["collector.github.com"];
+  #"185.199.109.133" = ["desktop.githubusercontent.com" "objects.githubusercontent.com"];
+  #"140.82.116.3" = ["gist.github.com"];
+  #"3.5.27.235" = ["github-cloud.s3.amazonaws.com"];
+  #"52.216.56.193" = ["github-com.s3.amazonaws.com"];
+  #"16.15.200.250" = ["github-production-release-asset-2e65be.s3.amazonaws.com" "github-production-repository-file-5c1aeb.s3.amazonaws.com" #"github-production-user-asset-6210df.s3.amazonaws.com"];
+  #"192.0.66.2" = ["github.blog"];
+  #"140.82.116.4" = ["github.com"];
+  #"140.82.114.18" = ["github.community"];
+  #"185.199.108.154" = ["github.githubassets.com"];
+  #"151.101.1.194" = ["github.global.ssl.fastly.net"];
+  #"185.199.108.153" = ["github.io" "githubstatus.com"];
+  #"140.82.114.26" = ["live.github.com"];
+  #"13.107.42.16" = ["pipelines.actions.githubusercontent.com"];
+  #"13.107.253.69" = ["vscode.dev"];
+  #"140.82.113.21" = ["education.github.com"];
+  #};
 
 
   #USTC Mirror
@@ -155,10 +163,11 @@
   users.users.cypher = {
     isNormalUser = true;
     description = "Cypher";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "tun" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      thunderbird
+      clash-verge-rev
     ];
     #openssh.authorizedKeys.keyFiles = [ "../.ssh/id_rsa" ];
   };
